@@ -1,0 +1,12 @@
+const express=require("express")
+// let data=require("./data/user")
+const app=express()
+const bodyparser=require("body-parser")
+app.use(bodyparser.json())
+// const contactsRoute=require("./routes/contactManagerRoutes")
+// app.use(contactsRoute)
+const contactRouter=require("./routers/contactRouter")
+// const { contactDetails } = require("./controllers/contactControllers")
+app.use(contactRouter)
+
+app.listen(3001,()=>console.log("server has started"))
