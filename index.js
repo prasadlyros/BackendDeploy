@@ -4,6 +4,9 @@ app.use(express.json())
 
 require('dotenv').config()
 
+const cors = require('cors')
+app.use(cors({origin : "http://localhost:3000",credentials:true}))
+
 const cre = require('./routers/credentialRoute')
 app.use(cre)
 
