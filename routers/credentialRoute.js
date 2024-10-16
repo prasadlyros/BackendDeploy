@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 
-const {signIn,signUp,protectedRoute} = require('../controllers/credentialController')
+const {Signin,signUp} = require('../controllers/credentialController')
 
 function authorize(req,res,next){
     const auth = req.headers.authorization
@@ -20,7 +20,6 @@ function authorize(req,res,next){
 }
 
 router.post('/v1/signUp',signUp)
-router.post('/v1/signIn',signIn)
-router.delete('/v1/user/:username',authorize,protectedRoute)
+router.post('/v1/signIn',Signin)
 
 module.exports = router
