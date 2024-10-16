@@ -24,7 +24,7 @@ const Signin = async (req,res) => {
     console.log(findUser)
     const isUser=await bcrypt.compare(data.password,findUser.password)
     if(isUser){
-        const token=await jwt.sign(data.username,"jamesbond")
+        const token=await jwt.sign(data.username,process.env.JWT_KEY)
         console.log(token)
         res.send({
             status:"successfully loggedIn",
