@@ -1,48 +1,43 @@
-const {credentialModel} = require('../models/credentialModel')
+const {credentialModel} = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const signUp = async (req,res) => {
     const data = req.body
-    const hashedPassword = await bcrypt.hash(data.password,8)//need to check this number 8
+    const hashedPassword = await bcrypt.hash(data.password,8)
     const user = new credentialModel({
         username : data.username,
-        password : hashedPassword
+        password : hashedPassword,
+        email:data.email
     })
+
     const result = await user.save()
     res.send({
-        status : "created user",
-        data : result
+        status:"created user",
+        data:result
     })
-}
+} 
 
-const signIn = async (req,res) => {
+const Signin = async (req,res) => {
     const data = req.body
-    const finduser = await credentialModel.findOne({username:data.username},{password : 1})
-    console.log(finduser)
-    const isUser = await bcrypt.compare(data.password, finduser.password)
-    console.log(isUser)
+    const findUser=await credentialModel.findOne({username:data.username},{password:1})
+    console.log(findUser)
+    const isUser=await bcrypt.compare(data.password,findUser.password)
     if(isUser){
-        const token = await jwt.sign(data.username,process.env.JWT_KEY)
+        const token=await jwt.sign(data.username,"jamesbond")
         console.log(token)
         res.send({
-            status : "Loggedin succesfully",
-            token : token
+            status:"successfully loggedIn",
+            token:token
         })
     }
     else{
         res.status(401).send({
-            status: "credentials is not Matching"
+            status:"credentials not matching"
         })
-    }
-}
-
-const protectedRoute = async (req,res) => {
-    const data = req.params
-    const result = await credentialModel.deleteOne({username : data.username})
-    res.send("dummy")
+    }   
 }
 
 module.exports = {
-    signUp, signIn, protectedRoute
+    signUp,Signin
 }
